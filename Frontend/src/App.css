@@ -12,3 +12,16 @@ body {
     background-color: #212121;
     display : flex;
 }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .app {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 769px) {
+    .app {
+        flex-direction: row;
+    }
+}

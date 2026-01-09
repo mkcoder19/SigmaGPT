@@ -15,11 +15,14 @@ export const AuthProvider = ({ children }) => {
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState(authContext);
+    const [userData, setUserData] = useState();
 
     useEffect(() => {
-        if (userData) navigate("/");
-    }, [userData]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUserData({ token });
+    }
+  }, []);
 
 
     const handleRegister = async (name, username, password) => {
@@ -31,7 +34,6 @@ export const AuthProvider = ({ children }) => {
             });
 
             localStorage.setItem("token" , res.data.token);
-            setUserData(res.data.user);
             return res.data.user;
 
         } catch (err) {
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
             if (response.status === 200) {
                 localStorage.setItem("token", response.data.token);
-                setUserData({ username });
+                setUserData(response.data.user || username);
                 return "Login Successful";
             }
 
@@ -63,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ userData , setUserData , handleLogin, handleRegister , handleLogout }}>
+        <AuthContext.Provider value={{ userData , handleLogin, handleRegister , handleLogout }}>
             {children}
         </AuthContext.Provider>
     );

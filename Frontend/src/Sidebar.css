@@ -88,3 +88,35 @@ button span {
     background-color : rgba(100 , 100 , 100 , 0.5);
     border-radius : 10px;
 }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Hide sidebar on mobile */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 30vh; /* Reduce width on tablet */
+    }
+
+    button {
+        margin: 5px;
+        padding: 8px;
+    }
+
+    button span {
+        font-size: 1rem;
+    }
+
+    .history {
+        width: 85%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .sidebar {
+        width: 40vh; /* Default width on desktop */
+    }
+}

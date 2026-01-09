@@ -36,3 +36,48 @@
 .hljs{
     border-radius : 1rem;
 }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .invisible-scrollbar,
+    .chats {
+        max-width: 100%;
+        padding: 2rem 1rem;
+    }
+
+    .userMessage {
+        margin-left: 1rem;
+        max-width: 80%;
+        padding: 8px 15px;
+    }
+
+    .gptDiv {
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .invisible-scrollbar,
+    .chats {
+        max-width: 600px;
+        padding: 4rem 2rem;
+    }
+
+    .userMessage {
+        margin-left: 10rem;
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .invisible-scrollbar,
+    .chats {
+        max-width: 700px;
+        padding: 8rem;
+    }
+
+    .userMessage {
+        margin-left: 15rem;
+        max-width: 500px;
+    }
+}

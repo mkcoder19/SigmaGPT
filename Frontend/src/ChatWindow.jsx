@@ -87,7 +87,7 @@ export default function ChatWindow(){
                             ) : (
                                 <IconButton onClick={()=>routeTo('/auth')}>
                                     <LoginIcon/>
-                                    <p>Log in</p>
+                                    <p>Log In</p>
                                 </IconButton>
                             )
                         }
