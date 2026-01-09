@@ -8,6 +8,7 @@ import {ScaleLoader} from 'react-spinners';
 import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
+import server from "./environment";
 export default function ChatWindow(){
     const {prompt , setPrompt , reply , setReply , currThreadId , prevChats , setPrevChats , setNewChat} = useContext(MyContext);
     const [loading , setLoading] = useState(false);
@@ -33,7 +34,7 @@ export default function ChatWindow(){
         };
 
         try{
-            const response = await fetch('http://localhost:8080/api/chat', options);
+            const response = await fetch(`${server}/api/chat`, options);
             const res = await response.json();
             console.log(res);
             setReply(res.reply);
