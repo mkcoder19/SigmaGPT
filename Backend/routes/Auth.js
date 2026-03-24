@@ -8,6 +8,10 @@ const router = express.Router();
 router.post('/register' , async (req , res)=>{
     const {name , username , password} = req.body;
 
+    if(!name || !username || !password){
+        return res.status(400).json({message : "Please enter the given details"});
+    }
+
     try{
         const existingUser = await Users.findOne({username});
 
@@ -60,7 +64,6 @@ router.post('/login', async (req , res)=>{
 
         if(isPasswordCorrect){
             const token = crypto.randomBytes(20).toString("hex");
-
             user.token = token;
             await user.save();
             return res.status(httpStatus.OK).json({token : token});

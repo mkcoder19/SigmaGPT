@@ -124,7 +124,7 @@ export default function Sidebar() {
       </ul>
 
       <div className="sign">
-        <p>By Manvesh Kumar &hearts;</p>
+        <p>By Sigma &hearts;     </p>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import express from "express";
 import Thread from "../models/Thread.js";
-import getOpenAIAPIResponse from "../utils/openai.js";
+import getAIResponse from "../utils/openai.js"; 
 import authMiddleware from "./middleware.js";
 
 const router = express.Router();
@@ -70,6 +70,7 @@ router.post("/chat", authMiddleware, async (req, res) => {
       userId: req.user._id,
     });
 
+    // ✅ Create new thread if not exists
     if (!thread) {
       thread = new Thread({
         threadId,
@@ -81,8 +82,30 @@ router.post("/chat", authMiddleware, async (req, res) => {
       thread.messages.push({ role: "user", content: message });
     }
 
-    const assistantReply = await getOpenAIAPIResponse(message);
+    // ✅ CLEAN messages (remove _id etc.)
+    const cleanMessages = thread.messages
+      .slice(-10) // limit history (performance + cost)
+      .map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+      }));
 
+    // ✅ Call Groq API
+    const assistantReply = await getAIResponse([
+      {
+        role: "system",
+        content:
+          "You are SigmaGPT, an AI tutor that explains concepts clearly and helps students learn step-by-step.",
+      },
+      ...cleanMessages,
+    ]);
+
+    // ✅ Safety check
+    if (!assistantReply) {
+      throw new Error("Empty AI response");
+    }
+
+    // ✅ Save assistant reply
     thread.messages.push({
       role: "assistant",
       content: assistantReply,
@@ -92,9 +115,17 @@ router.post("/chat", authMiddleware, async (req, res) => {
     await thread.save();
 
     res.json({ reply: assistantReply });
+
   } catch (err) {
-    console.log("Chat failed", err);
-    res.status(500).json({ error: "Chat failed" });
+    console.error("Chat endpoint error:", err.message || err);
+
+    if (err.message?.includes("429")) {
+      return res.status(429).json({
+        error: "AI is busy right now. Try again later.",
+      });
+    }
+
+    res.status(500).json({ error: err.message || "Chat failed" });
   }
 });
 

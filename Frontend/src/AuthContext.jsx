@@ -1,5 +1,4 @@
 import { createContext, useState , useContext , useEffect} from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import server from "./environment";
 
@@ -13,8 +12,6 @@ const client = axios.create({
 
 export const AuthProvider = ({ children }) => {
     const authContext = useContext(AuthContext);
-    const navigate = useNavigate();
-
     const [userData, setUserData] = useState();
 
     useEffect(() => {
@@ -35,7 +32,6 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem("token" , res.data.token);
             return res.data.user;
-
         } catch (err) {
             throw err.res?.data || err;
         }
